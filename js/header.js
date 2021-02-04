@@ -1,4 +1,10 @@
+import { updatingTacoHtml } from "./updateTacoHtml.js";
+
 const createElementHeader = function (taco) {
+  if (document.querySelector("header") !== null) {
+    document.querySelector("header").remove();
+  }
+
   const header = document.createElement("header");
   header.classList.add("header");
 
@@ -12,6 +18,15 @@ const createElementHeader = function (taco) {
         <span class="header_taco-element" id="header_title-shell">${taco.shell.name}</span>
       </h3>
       <button class="button">Generate New Taco</button>`;
+
+  const button = header.querySelector(".button");
+  button.addEventListener("click", () => {
+    fetch("http://taco-randomizer.herokuapp.com/random/")
+      .then((response) => response.json())
+      .then((tacoJson) => {
+        updatingTacoHtml(tacoJson);
+      });
+  });
   return header;
 };
 
